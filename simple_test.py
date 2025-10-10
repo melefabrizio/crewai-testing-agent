@@ -38,7 +38,7 @@ def main():
     crew = FrontendTestCrew( headless=False)
 
     # Simple test scenario
-    print("\n🌐 Testing: https://staging.martiniarte.it")
+    print("\n🌐 Testing: https://v0-erp-application-development-eight.vercel.app")
     print("📋 Running simple homepage test...\n")
 
     result = crew.test_website(

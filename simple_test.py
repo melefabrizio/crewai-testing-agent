@@ -21,6 +21,13 @@ def main():
         print("⚠️  Error: No API key found!")
         print("Please set OPENAI_API_KEY or ANTHROPIC_API_KEY in your .env file")
         return
+    
+    if not os.getenv("WEBSITE"):
+        print("⚠️  Error: No WEBSITE found!")
+        print("Please set WEBSITE in your .env file")
+        return
+    
+    website_url = os.getenv("WEBSITE") or "https://v0-erp-app-with-contacts.vercel.app/"
 
     # Check for Node.js (required for Playwright MCP)
     try:
@@ -38,11 +45,11 @@ def main():
     crew = FrontendTestCrew( headless=False)
 
     # Simple test scenario
-    print("\n🌐 Testing: https://v0-erp-application-development-eight.vercel.app")
+    print(f"\n🌐 Testing: {website_url}")
     print("📋 Running simple homepage test...\n")
 
     result = crew.test_website(
-        website_url="https://v0-erp-application-development-eight.vercel.app/",
+        website_url=website_url,
         test_scenario="""
         Test the Contacts module. Test all features available in the contacts page.
         """

@@ -31,7 +31,9 @@ def create_planning_task(
     Test Scenario: {test_scenario}{context_section}
     
     The plan should be formulated while exploring deeply the website to infer features and interactions.
-    You should look accurately at the website HTML and visual structure to infer features. If needed interact with the website to discover tests.
+    You should look accurately at the website HTML and visual structure to infer features.
+    If needed interact with the website to discover tests.
+    If the TEST_PLAN.md file already exists, update it with new tests if needed.
 
     Your test plan should be in a semi-structured format that includes:
     1. Test objective and scope

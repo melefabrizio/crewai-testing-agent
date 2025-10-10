@@ -27,7 +27,7 @@ def main():
         print("Please set WEBSITE in your .env file")
         return
     
-    website_url = os.getenv("WEBSITE") or "https://v0-erp-app-with-contacts.vercel.app/"
+    website_url = os.getenv("WEBSITE") or "https://v0-erp-application-development-eight.vercel.app/"
 
     # Check for Node.js (required for Playwright MCP)
     try:

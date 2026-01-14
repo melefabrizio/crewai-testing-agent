@@ -52,6 +52,7 @@ def main():
         website_url=website_url,
         test_scenario="""
         Test the Contacts module. Test all features available in the contacts page.
+        Plan and execute tests, then report the JSON results.
         """
     )
 

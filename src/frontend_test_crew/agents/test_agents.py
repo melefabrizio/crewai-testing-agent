@@ -99,3 +99,18 @@ def create_test_executor(llm: Optional[Any] = None, tools: List = None) -> Agent
         tools=tools,
         llm=llm,
     )
+
+def create_test_reporter(llm: Optional[Any] = None, tools: List = None) -> Agent:
+    return Agent(
+        role="Frontend Test Reporter",
+        goal="Analyze test results and provide detailed reports",
+        backstory=(
+            "You are a skilled QA engineer."
+            "You analyze frontend test results and provide reports in JSON format. "
+            "You understand the importance of providing accurate reports in machine-readable formats."
+            "You also understand the importance of test automation and how to measure it. "
+            "You limit your outputs strictly to JSON format and follow task instructions strictly."
+        ),
+        llm=llm,
+        tools=tools,
+    )

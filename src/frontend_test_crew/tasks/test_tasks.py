@@ -110,3 +110,55 @@ def create_execution_task(
         expected_output=expected_output,
         agent=agent,
     )
+
+def create_report_task(
+        agent: Agent,
+        test_execution_context: str = ""
+) -> Task:
+    """
+    Create a test report task.
+
+    Args:
+        agent: The test executor agent
+        test_execution_context: Context from the test execution task (will be provided automatically)
+
+    Returns:
+        Task object for test execution
+    """
+    description = """
+    Review the test execution result provided by the Test Executor and generate a JSON report.
+
+    Steps:
+    1. Review the test execution result from the previous task
+    2. Analyze the results and generate a JSON report
+    3. Include pass_count, fail_count, error_count, test_cases, success, fails, and errors in the report
+
+    Make sure to execute all steps in order and report accurate results.
+    Report should NOT be saved on file.
+    """
+
+    expected_output = """
+    A JSON report with:
+    - pass_count -> integer representing the number of passed tests
+    - fail_count -> integer representing the number of failed tests
+    - error_count -> integer representing the number of errors encountered
+    - test_cases -> integer representing the number of test cases executed
+    - success -> boolean indicating overall test success
+    - fails -> list of failed test cases
+    - errors -> list of errors encountered
+    - summary -> list of objects, each object containing:
+       - test_name -> name of the case
+       - test_id -> id of the case
+       - passed -> integer representing the number of passed assertions in the case
+       - failed -> integer representing the number of failed assertions in the case
+       - errors -> integer representing the number of errors encountered in the case
+    - recommendations -> suggestions made by the executor about the application or the test suite
+    
+    The json report will contain ONLY the specified fields and be formatted as valid JSON.
+    """
+
+    return Task(
+        description=description,
+        expected_output=expected_output,
+        agent=agent,
+    )

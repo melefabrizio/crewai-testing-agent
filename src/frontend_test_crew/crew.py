@@ -8,8 +8,10 @@ from crewai_tools.tools.file_read_tool.file_read_tool import FileReadTool
 from crewai_tools.tools.file_writer_tool.file_writer_tool import FileWriterTool
 from openai.types.beta import FileSearchTool
 
-from .agents.test_agents import create_test_planner, create_test_executor
-from .tasks.test_tasks import create_planning_task, create_execution_task
+from .agents.test_agents import create_test_planner, create_test_executor, \
+    create_test_reporter
+from .tasks.test_tasks import create_planning_task, create_execution_task, \
+    create_report_task
 from .mcp_config import get_playwright_mcp_params
 
 
@@ -20,6 +22,7 @@ class FrontendTestCrew:
     The crew consists of:
     1. Test Planner: Explores websites and creates detailed test plans
     2. Test Executor: Executes tests using Playwright MCP and reports results
+    3. Test Reporter: Generates comprehensive test reports
 
     Both agents connect to the Playwright MCP server via stdio for browser automation.
     """
@@ -71,6 +74,7 @@ class FrontendTestCrew:
                 # Create agents with tools from MCP server
                 test_planner = create_test_planner(llm=self.llm, tools=tools + file_tools)
                 test_executor = create_test_executor(llm=self.llm, tools=tools + file_tools)
+                test_reporter = create_test_reporter(llm=self.llm, tools=file_tools)
 
                 # Create tasks
                 planning_task = create_planning_task(
@@ -87,10 +91,16 @@ class FrontendTestCrew:
                 # Execution task depends on planning task output
                 execution_task.context = [planning_task]
 
+                report_task = create_report_task(
+                    agent=test_reporter
+                )
+
+                report_task.context = [execution_task]
+
                 # Create and configure crew
                 crew = Crew(
-                    agents=[test_planner, test_executor],
-                    tasks=[planning_task, execution_task],
+                    agents=[test_planner, test_executor, test_reporter],
+                    tasks=[planning_task, execution_task, report_task],
                     process=Process.sequential,
                     verbose=True,
                 )

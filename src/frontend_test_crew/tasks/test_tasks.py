@@ -93,7 +93,7 @@ def create_execution_task(
     2. Execute each test step using the Playwright Test Executor tool
     3. Document the results of each step
     4. Report any failures or issues encountered
-    5. Provide a summary of the test execution
+    5. Provide a summary of the test execution and write into TEST_RESULTS.md file fail/passes
 
     Make sure to execute all steps in order and report comprehensive results.
     """
@@ -105,6 +105,8 @@ def create_execution_task(
     - Screenshots or evidence where applicable
     - Overall test result summary
     - Recommendations for any failures found
+    
+    All results should be documented in TEST_RESULTS.md file.
     """
 
     return Task(
@@ -131,7 +133,7 @@ def create_report_task(
     Review the test execution result provided by the Test Executor and generate a JSON report.
 
     Steps:
-    1. Review the test execution result from the previous task
+    1. Review the test execution result from the previous task from TEST_RESULTS.md
     2. Analyze the results and generate a JSON report
     3. Include pass_count, fail_count, error_count, test_cases, success, fails, and errors in the report
 

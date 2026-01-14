@@ -3,6 +3,8 @@
 from crewai import Task, Agent
 from typing import Optional
 
+from pydantic import BaseModel
+
 
 def create_planning_task(
     agent: Agent,
@@ -157,8 +159,31 @@ def create_report_task(
     The json report will contain ONLY the specified fields and be formatted as valid JSON.
     """
 
+    # Pydantic model for the expected JSON output
+    from typing import List, Optional
+    class TestCaseSummary(BaseModel):
+        test_name: str
+        test_id: str
+        passed: int
+        failed: int
+        errors: int
+
+    class TestReportModel(BaseModel):
+        pass_count: int
+        fail_count: int
+        error_count: int
+        test_cases: int
+        success: bool
+        fails: List[str]
+        errors: List[str]
+        summary: List[TestCaseSummary]
+        recommendations: Optional[List[str]]
+
+    json_model: type[BaseModel] = TestReportModel
+
     return Task(
         description=description,
         expected_output=expected_output,
         agent=agent,
+        output_json=TestReportModel
     )

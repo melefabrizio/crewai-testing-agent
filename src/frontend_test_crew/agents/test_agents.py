@@ -4,7 +4,7 @@ from crewai import Agent
 from typing import Optional, Any, List
 
 
-def create_test_planner(llm: Optional[Any] = None, tools: List = None) -> Agent:
+def create_test_planner(llm: Optional[Any] = None, tools: List = None, verbose = True) -> Agent:
     """
     Create the Test Planner agent.
 
@@ -40,14 +40,14 @@ def create_test_planner(llm: Optional[Any] = None, tools: List = None) -> Agent:
             "Your plans are detailed, actionable, and optimized for automated execution."
             "The plan is saved in the TEST_PLAN.md file."
         ),
-        verbose=True,
+        verbose=verbose,
         allow_delegation=False,
         tools=tools,
         llm=llm,
     )
 
 
-def create_test_executor(llm: Optional[Any] = None, tools: List = None) -> Agent:
+def create_test_executor(llm: Optional[Any] = None, tools: List = None, verbose=True) -> Agent:
     """
     Create the Test Executor agent.
 
@@ -94,16 +94,17 @@ def create_test_executor(llm: Optional[Any] = None, tools: List = None) -> Agent
             "Your reports include pass/fail status for each step with clear, actionable information."
             "Test plan is always read from TEST_PLAN.md file."
         ),
-        verbose=True,
+        verbose=verbose,
         allow_delegation=False,
         tools=tools,
         llm=llm,
     )
 
-def create_test_reporter(llm: Optional[Any] = None, tools: List = None) -> Agent:
+def create_test_reporter(llm: Optional[Any] = None, tools: List = None, verbose=True) -> Agent:
     return Agent(
         role="Frontend Test Reporter",
         goal="Analyze test results and provide detailed reports",
+        verbose=verbose,
         backstory=(
             "You are a skilled QA engineer."
             "You analyze frontend test results and provide reports in JSON format. "

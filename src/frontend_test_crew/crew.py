@@ -45,6 +45,7 @@ class FrontendTestCrew:
         self,
         website_url: str,
         test_scenario: str,
+        verbose: bool = False,
         additional_context: Optional[str] = None
     ) -> Dict[str, Any]:
         """
@@ -72,9 +73,9 @@ class FrontendTestCrew:
             with MCPServerAdapter(server_params) as tools:
                 file_tools = [FileWriterTool(), FileReadTool()]
                 # Create agents with tools from MCP server
-                test_planner = create_test_planner(llm=self.llm, tools=tools + file_tools)
-                test_executor = create_test_executor(llm=self.llm, tools=tools + file_tools)
-                test_reporter = create_test_reporter(llm=self.llm, tools=file_tools)
+                test_planner = create_test_planner(llm=self.llm, tools=tools + file_tools, verbose=verbose)
+                test_executor = create_test_executor(llm=self.llm, tools=tools + file_tools, verbose=verbose)
+                test_reporter = create_test_reporter(llm=self.llm, tools=file_tools, verbose=verbose)
 
                 # Create tasks
                 planning_task = create_planning_task(
@@ -92,7 +93,7 @@ class FrontendTestCrew:
                 execution_task.context = [planning_task]
 
                 report_task = create_report_task(
-                    agent=test_reporter
+                    agent=test_reporter,
                 )
 
                 report_task.context = [execution_task]
@@ -102,7 +103,7 @@ class FrontendTestCrew:
                     agents=[test_planner, test_executor, test_reporter],
                     tasks=[planning_task, execution_task, report_task],
                     process=Process.sequential,
-                    verbose=True,
+                    verbose=verbose,
                 )
 
                 # Execute the crew
